@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { Layout } from "../components/site/Layout";
 
 function NotFoundComponent() {
   return (
@@ -72,14 +73,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Projeto de Extensão · Gestão da Informação UFPR" },
+      { name: "description", content: "Blog do projeto de extensão do curso de Gestão da Informação da Universidade Federal do Paraná." },
+      { name: "author", content: "Clara, Julia e Eduardo — UFPR" },
+      { property: "og:title", content: "Projeto de Extensão · Gestão da Informação UFPR" },
+      { property: "og:description", content: "Atualizações, artigos e eventos do projeto de extensão do curso de Gestão da Informação da UFPR." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -113,7 +113,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <Layout>
+        <Outlet />
+      </Layout>
     </QueryClientProvider>
   );
 }
