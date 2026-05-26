@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
 import { getPost, formatDate } from "../lib/posts";
+import { Comments } from "@/components/site/Comments";
 
 export const Route = createFileRoute("/blog/$slug")({
   component: PostPage,
@@ -44,6 +45,8 @@ function PostPage() {
           <p key={i}>{p}</p>
         ))}
       </div>
+
+      <Comments postSlug={post.slug} />
     </article>
   );
 }
