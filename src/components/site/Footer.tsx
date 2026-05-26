@@ -51,7 +51,7 @@ export function Footer() {
 
       <div className="border-t border-primary-foreground/10">
         <div className="mx-auto max-w-6xl px-4 py-4 text-xs text-primary-foreground/70">
-          © {new Date().getFullYear()} Projeto de Extensão — Gestão da Informação · UFPR. Todos os direitos reservados.
+          © {new Date().getFullYear()} Projeto de Extensão — Gestão da Informação · UFPR. Todos os direitos reservados. - Desenvolvido por Matheus Ferreira
         </div>
       </div>
     </footer>
