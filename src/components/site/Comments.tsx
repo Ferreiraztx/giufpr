@@ -32,7 +32,7 @@ function formatWhen(iso: string) {
 
 function renderContent(text: string) {
   // Render **bold**, *italic*, [text](url). Plain-text first (no HTML injection).
-  const nodes: Array<string | JSX.Element> = [];
+  const nodes: Array<string | React.ReactElement> = [];
   let i = 0;
   let key = 0;
   const re = /(\*\*([^*]+)\*\*|\*([^*]+)\*|\[([^\]]+)\]\((https?:\/\/[^\s)]+)\))/g;
