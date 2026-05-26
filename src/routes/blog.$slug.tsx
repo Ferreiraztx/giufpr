@@ -40,7 +40,7 @@ function PostPage() {
 
       <div className="space-y-5 text-base leading-relaxed text-foreground/90">
         <p className="text-lg text-muted-foreground">{post.excerpt}</p>
-        {post.content.split("\n\n").map((p, i) => (
+        {post.content.split("\n\n").map((p: string, i: number) => (
           <p key={i}>{p}</p>
         ))}
       </div>
