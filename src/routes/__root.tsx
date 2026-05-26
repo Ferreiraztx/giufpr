@@ -77,9 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Blog do projeto de extensão do curso de Gestão da Informação da Universidade Federal do Paraná." },
       { name: "author", content: "Clara, Julia e Eduardo — UFPR" },
       { property: "og:title", content: "Projeto de Extensão · Gestão da Informação UFPR" },
-      { property: "og:description", content: "Atualizações, artigos e eventos do projeto de extensão do curso de Gestão da Informação da UFPR." },
+      { property: "og:description", content: "Blog do projeto de extensão do curso de Gestão da Informação da Universidade Federal do Paraná." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Projeto de Extensão · Gestão da Informação UFPR" },
+      { name: "twitter:description", content: "Blog do projeto de extensão do curso de Gestão da Informação da Universidade Federal do Paraná." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/810cb7f0-28d5-4897-9eb5-c78a43bf2ae7/id-preview-9e9f9026--488f7eb7-1417-4428-b468-1beeacaf7719.lovable.app-1779798521694.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/810cb7f0-28d5-4897-9eb5-c78a43bf2ae7/id-preview-9e9f9026--488f7eb7-1417-4428-b468-1beeacaf7719.lovable.app-1779798521694.png" },
     ],
     links: [
       {
