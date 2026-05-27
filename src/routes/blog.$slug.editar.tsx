@@ -33,12 +33,13 @@ function EditPost() {
 
   useEffect(() => {
     if (loading || fetching) return;
-    if (!user) return navigate({ to: "/login" });
+    if (!user) { navigate({ to: "/login" }); return; }
     if (post && !isSuperAdmin && post.author_id !== user.id) {
       toast.error("Você não tem permissão para editar este post.");
       navigate({ to: "/blog/$slug", params: { slug } });
     }
   }, [loading, fetching, user, post, isSuperAdmin, navigate, slug]);
+
 
   if (loading || fetching || !post) {
     return <div className="mx-auto max-w-3xl px-4 py-16 text-muted-foreground">Carregando...</div>;
