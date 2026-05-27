@@ -22,7 +22,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogNovoRouteImport } from './routes/blog.novo'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as BlogSlugEditarRouteImport } from './routes/blog.$slug_.editar.tsx'
+import { Route as BlogSlugEditarRouteImport } from './routes/blog.$slug.editar.tsx'
 
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
