@@ -21,6 +21,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogNovoRouteImport } from './routes/blog.novo'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as BlogSlugEditarRouteImport } from './routes/blog.$slug.editar'
 
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
@@ -82,6 +83,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugEditarRoute = BlogSlugEditarRouteImport.update({
+  id: '/editar',
+  path: '/editar',
+  getParentRoute: () => BlogSlugRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -93,9 +99,10 @@ export interface FileRoutesByFullPath {
   '/registro': typeof RegistroRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
-  '/blog/$slug': typeof BlogSlugRoute
+  '/blog/$slug': typeof BlogSlugRouteWithChildren
   '/blog/novo': typeof BlogNovoRoute
   '/blog/': typeof BlogIndexRoute
+  '/blog/$slug/editar': typeof BlogSlugEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,9 +114,10 @@ export interface FileRoutesByTo {
   '/registro': typeof RegistroRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
-  '/blog/$slug': typeof BlogSlugRoute
+  '/blog/$slug': typeof BlogSlugRouteWithChildren
   '/blog/novo': typeof BlogNovoRoute
   '/blog': typeof BlogIndexRoute
+  '/blog/$slug/editar': typeof BlogSlugEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,9 +130,10 @@ export interface FileRoutesById {
   '/registro': typeof RegistroRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
-  '/blog/$slug': typeof BlogSlugRoute
+  '/blog/$slug': typeof BlogSlugRouteWithChildren
   '/blog/novo': typeof BlogNovoRoute
   '/blog/': typeof BlogIndexRoute
+  '/blog/$slug/editar': typeof BlogSlugEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/blog/novo'
     | '/blog/'
+    | '/blog/$slug/editar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/blog/novo'
     | '/blog'
+    | '/blog/$slug/editar'
   id:
     | '__root__'
     | '/'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/blog/novo'
     | '/blog/'
+    | '/blog/$slug/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -181,7 +193,7 @@ export interface RootRouteChildren {
   RegistroRoute: typeof RegistroRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SobreRoute: typeof SobreRoute
-  BlogSlugRoute: typeof BlogSlugRoute
+  BlogSlugRoute: typeof BlogSlugRouteWithChildren
   BlogNovoRoute: typeof BlogNovoRoute
   BlogIndexRoute: typeof BlogIndexRoute
 }
@@ -272,8 +284,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug/editar': {
+      id: '/blog/$slug/editar'
+      path: '/editar'
+      fullPath: '/blog/$slug/editar'
+      preLoaderRoute: typeof BlogSlugEditarRouteImport
+      parentRoute: typeof BlogSlugRoute
+    }
   }
 }
+
+interface BlogSlugRouteChildren {
+  BlogSlugEditarRoute: typeof BlogSlugEditarRoute
+}
+
+const BlogSlugRouteChildren: BlogSlugRouteChildren = {
+  BlogSlugEditarRoute: BlogSlugEditarRoute,
+}
+
+const BlogSlugRouteWithChildren = BlogSlugRoute._addFileChildren(
+  BlogSlugRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -285,7 +316,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegistroRoute: RegistroRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SobreRoute: SobreRoute,
-  BlogSlugRoute: BlogSlugRoute,
+  BlogSlugRoute: BlogSlugRouteWithChildren,
   BlogNovoRoute: BlogNovoRoute,
   BlogIndexRoute: BlogIndexRoute,
 }
