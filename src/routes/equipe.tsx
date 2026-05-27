@@ -11,19 +11,7 @@ const team = [
     role: "Pesquisa e curadoria de conteúdo",
     bio: "Estudante de Gestão da Informação interessada em organização do conhecimento, taxonomias e ferramentas de gestão pessoal de informação.",
     initials: "CL",
-  },
-  {
-    name: "Julia",
-    role: "Dados abertos e análise",
-    bio: "Pesquisa o ecossistema brasileiro de dados abertos, com foco em qualidade de metadados e usabilidade de portais governamentais.",
-    initials: "JU",
-  },
-  {
-    name: "Eduardo",
-    role: "Eventos e comunicação",
-    bio: "Atua na organização de seminários e oficinas e na produção de conteúdo do blog do projeto.",
-    initials: "ED",
-  },
+  }
 ];
 
 function Equipe() {
@@ -36,7 +24,7 @@ function Equipe() {
             Quem está por trás do projeto.
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Três integrantes do curso de Gestão da Informação da UFPR conduzem este projeto de
+            Clara a integrante do curso de Gestão da Informação da UFPR conduz este projeto de
             extensão, articulando pesquisa, comunicação e engajamento com a comunidade.
           </p>
         </div>
