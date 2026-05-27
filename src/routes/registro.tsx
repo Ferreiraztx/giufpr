@@ -26,7 +26,7 @@ function RegistroPage() {
     e.preventDefault();
     if (password.length < 6) return toast.error("Senha deve ter ao menos 6 caracteres.");
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -34,10 +34,23 @@ function RegistroPage() {
         data: { display_name: name },
       },
     });
+    if (error) {
+      setLoading(false);
+      return toast.error(error.message);
+    }
+    // Auto-confirm está habilitado: já existe sessão. Caso contrário, tenta login direto.
+    if (!data.session) {
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) {
+        setLoading(false);
+        toast.success("Conta criada! Faça login para continuar.");
+        navigate({ to: "/login" });
+        return;
+      }
+    }
     setLoading(false);
-    if (error) return toast.error(error.message);
-    toast.success("Conta criada! Verifique seu e-mail para confirmar.");
-    navigate({ to: "/login" });
+    toast.success("Conta criada com sucesso! Bem-vindo(a).");
+    navigate({ to: "/" });
   };
 
   const handleGoogle = async () => {
