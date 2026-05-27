@@ -1,8 +1,21 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, BookOpen, LogOut, UserCircle } from "lucide-react";
+import { Menu, X, BookOpen, LogOut, UserCircle, Shield, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { UserAvatar } from "./UserAvatar";
+
+function RoleBadge({ role }: { role: "admin" | "super_admin" }) {
+  const isSuper = role === "super_admin";
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+      isSuper ? "bg-primary text-primary-foreground" : "bg-accent/30 text-accent-foreground"
+    }`}>
+      {isSuper ? <ShieldCheck className="h-3 w-3" /> : <Shield className="h-3 w-3" />}
+      {isSuper ? "Super Admin" : "Admin"}
+    </span>
+  );
+}
+
 
 const links = [
   { to: "/", label: "Início" },
@@ -14,8 +27,9 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, role, isAdmin, isSuperAdmin, signOut } = useAuth();
   const navigate = useNavigate();
+
 
   const handleSignOut = async () => {
     await signOut();
@@ -52,15 +66,22 @@ export function Navbar() {
         <div className="hidden items-center gap-2 md:flex">
           {user ? (
             <>
+              {isSuperAdmin && (
+                <Link to="/admin" className="rounded-md px-3 py-2 text-sm font-medium text-primary hover:bg-secondary">
+                  Admin
+                </Link>
+              )}
               <Link to="/perfil" className="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-secondary">
                 <UserAvatar name={profile?.display_name} avatarUrl={profile?.avatar_url} size={28} />
                 <span className="text-sm font-medium text-foreground">{profile?.display_name || "Perfil"}</span>
+                {isAdmin && <RoleBadge role={isSuperAdmin ? "super_admin" : "admin"} />}
               </Link>
               <button onClick={handleSignOut} title="Sair"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-md text-foreground/70 hover:bg-secondary hover:text-foreground">
                 <LogOut className="h-4 w-4" />
               </button>
             </>
+
           ) : (
             <>
               <Link to="/login" className="rounded-md px-3 py-2 text-sm font-medium hover:bg-secondary">Entrar</Link>
@@ -93,13 +114,20 @@ export function Navbar() {
             <div className="my-2 h-px bg-border" />
             {user ? (
               <>
+                {isSuperAdmin && (
+                  <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium text-primary hover:bg-secondary">
+                    <ShieldCheck className="h-4 w-4" /> Admin
+                  </Link>
+                )}
                 <Link to="/perfil" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-3 text-sm hover:bg-secondary">
                   <UserCircle className="h-4 w-4" /> Meu perfil
+                  {isAdmin && <RoleBadge role={isSuperAdmin ? "super_admin" : "admin"} />}
                 </Link>
                 <button onClick={() => { setOpen(false); handleSignOut(); }} className="flex items-center gap-2 rounded-md px-3 py-3 text-left text-sm hover:bg-secondary">
                   <LogOut className="h-4 w-4" /> Sair
                 </button>
               </>
+
             ) : (
               <>
                 <Link to="/login" onClick={() => setOpen(false)} className="rounded-md px-3 py-3 text-sm font-medium hover:bg-secondary">Entrar</Link>
