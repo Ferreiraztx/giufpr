@@ -9,20 +9,31 @@ export type Profile = {
   bio: string | null;
 };
 
+export type AppRole = "user" | "admin" | "super_admin";
+
 type AuthContextValue = {
   session: Session | null;
   user: User | null;
   profile: Profile | null;
+  role: AppRole;
+  isAdmin: boolean;
+  isSuperAdmin: boolean;
   loading: boolean;
   refreshProfile: () => Promise<void>;
+  refreshRole: () => Promise<void>;
   signOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+function rank(r: AppRole) {
+  return r === "super_admin" ? 3 : r === "admin" ? 2 : 1;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [role, setRole] = useState<AppRole>("user");
   const [loading, setLoading] = useState(true);
 
   const loadProfile = async (userId: string) => {
@@ -34,20 +45,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile((data as Profile | null) ?? null);
   };
 
+  const loadRole = async (userId: string) => {
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId);
+    const roles = (data ?? []).map((r) => r.role as AppRole);
+    if (roles.length === 0) return setRole("user");
+    const highest = roles.reduce((a, b) => (rank(b) > rank(a) ? b : a), "user" as AppRole);
+    setRole(highest);
+  };
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s);
       if (s?.user) {
-        // defer to avoid deadlock
-        setTimeout(() => loadProfile(s.user.id), 0);
+        setTimeout(() => { loadProfile(s.user.id); loadRole(s.user.id); }, 0);
       } else {
         setProfile(null);
+        setRole("user");
       }
     });
 
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
-      if (data.session?.user) loadProfile(data.session.user.id);
+      if (data.session?.user) {
+        loadProfile(data.session.user.id);
+        loadRole(data.session.user.id);
+      }
       setLoading(false);
     });
 
@@ -58,13 +83,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     session,
     user: session?.user ?? null,
     profile,
+    role,
+    isAdmin: role === "admin" || role === "super_admin",
+    isSuperAdmin: role === "super_admin",
     loading,
-    refreshProfile: async () => {
-      if (session?.user) await loadProfile(session.user.id);
-    },
-    signOut: async () => {
-      await supabase.auth.signOut();
-    },
+    refreshProfile: async () => { if (session?.user) await loadProfile(session.user.id); },
+    refreshRole: async () => { if (session?.user) await loadRole(session.user.id); },
+    signOut: async () => { await supabase.auth.signOut(); },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
