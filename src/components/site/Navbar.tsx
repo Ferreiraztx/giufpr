@@ -1,8 +1,21 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, BookOpen, LogOut, UserCircle } from "lucide-react";
+import { Menu, X, BookOpen, LogOut, UserCircle, Shield, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { UserAvatar } from "./UserAvatar";
+
+function RoleBadge({ role }: { role: "admin" | "super_admin" }) {
+  const isSuper = role === "super_admin";
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+      isSuper ? "bg-primary text-primary-foreground" : "bg-accent/30 text-accent-foreground"
+    }`}>
+      {isSuper ? <ShieldCheck className="h-3 w-3" /> : <Shield className="h-3 w-3" />}
+      {isSuper ? "Super Admin" : "Admin"}
+    </span>
+  );
+}
+
 
 const links = [
   { to: "/", label: "Início" },
