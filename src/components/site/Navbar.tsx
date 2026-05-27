@@ -27,8 +27,9 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, role, isAdmin, isSuperAdmin, signOut } = useAuth();
   const navigate = useNavigate();
+
 
   const handleSignOut = async () => {
     await signOut();
