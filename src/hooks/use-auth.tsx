@@ -19,6 +19,7 @@ type AuthContextValue = {
   isAdmin: boolean;
   isSuperAdmin: boolean;
   loading: boolean;
+  roleLoading: boolean;
   refreshProfile: () => Promise<void>;
   refreshRole: () => Promise<void>;
   signOut: () => Promise<void>;
@@ -35,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [role, setRole] = useState<AppRole>("user");
   const [loading, setLoading] = useState(true);
+  const [roleLoading, setRoleLoading] = useState(true);
 
   const loadProfile = async (userId: string) => {
     const { data } = await supabase
@@ -46,14 +48,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loadRole = async (userId: string) => {
+    setRoleLoading(true);
     const { data } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", userId);
     const roles = (data ?? []).map((r) => r.role as AppRole);
-    if (roles.length === 0) return setRole("user");
-    const highest = roles.reduce((a, b) => (rank(b) > rank(a) ? b : a), "user" as AppRole);
-    setRole(highest);
+    if (roles.length === 0) {
+      setRole("user");
+    } else {
+      const highest = roles.reduce((a, b) => (rank(b) > rank(a) ? b : a), "user" as AppRole);
+      setRole(highest);
+    }
+    setRoleLoading(false);
   };
 
   useEffect(() => {
@@ -64,6 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setProfile(null);
         setRole("user");
+        setRoleLoading(false);
       }
     });
 
@@ -72,6 +80,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (data.session?.user) {
         loadProfile(data.session.user.id);
         loadRole(data.session.user.id);
+      } else {
+        setRoleLoading(false);
       }
       setLoading(false);
     });
@@ -87,6 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAdmin: role === "admin" || role === "super_admin",
     isSuperAdmin: role === "super_admin",
     loading,
+    roleLoading,
     refreshProfile: async () => { if (session?.user) await loadProfile(session.user.id); },
     refreshRole: async () => { if (session?.user) await loadRole(session.user.id); },
     signOut: async () => { await supabase.auth.signOut(); },

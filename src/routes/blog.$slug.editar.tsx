@@ -12,7 +12,7 @@ export const Route = createFileRoute("/blog/$slug/editar")({
 
 function EditPost() {
   const { slug } = Route.useParams();
-  const { user, isSuperAdmin, loading } = useAuth();
+  const { user, isSuperAdmin, loading, roleLoading } = useAuth();
   const navigate = useNavigate();
   const [post, setPost] = useState<Post | null>(null);
   const [title, setTitle] = useState("");
@@ -26,22 +26,24 @@ function EditPost() {
     getPostBySlug(slug).then((p) => {
       if (p) {
         setPost(p);
-        setTitle(p.title); setExcerpt(p.excerpt); setContent(p.content); setCategory(p.category);
+        setTitle(p.title);
+        setExcerpt(p.excerpt);
+        setContent(p.content);
+        setCategory(p.category);
       }
     }).finally(() => setFetching(false));
   }, [slug]);
 
   useEffect(() => {
-    if (loading || fetching) return;
+    if (loading || fetching || roleLoading) return;
     if (!user) { navigate({ to: "/login" }); return; }
     if (post && !isSuperAdmin && post.author_id !== user.id) {
       toast.error("Você não tem permissão para editar este post.");
       navigate({ to: "/blog/$slug", params: { slug } });
     }
-  }, [loading, fetching, user, post, isSuperAdmin, navigate, slug]);
+  }, [loading, roleLoading, fetching, user, post, isSuperAdmin, navigate, slug]);
 
-
-  if (loading || fetching || !post) {
+  if (loading || fetching || roleLoading || !post) {
     return <div className="mx-auto max-w-3xl px-4 py-16 text-muted-foreground">Carregando...</div>;
   }
 
