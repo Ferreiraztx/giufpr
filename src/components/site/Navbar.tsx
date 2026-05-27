@@ -66,15 +66,22 @@ export function Navbar() {
         <div className="hidden items-center gap-2 md:flex">
           {user ? (
             <>
+              {isSuperAdmin && (
+                <Link to="/admin" className="rounded-md px-3 py-2 text-sm font-medium text-primary hover:bg-secondary">
+                  Admin
+                </Link>
+              )}
               <Link to="/perfil" className="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-secondary">
                 <UserAvatar name={profile?.display_name} avatarUrl={profile?.avatar_url} size={28} />
                 <span className="text-sm font-medium text-foreground">{profile?.display_name || "Perfil"}</span>
+                {isAdmin && <RoleBadge role={isSuperAdmin ? "super_admin" : "admin"} />}
               </Link>
               <button onClick={handleSignOut} title="Sair"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-md text-foreground/70 hover:bg-secondary hover:text-foreground">
                 <LogOut className="h-4 w-4" />
               </button>
             </>
+
           ) : (
             <>
               <Link to="/login" className="rounded-md px-3 py-2 text-sm font-medium hover:bg-secondary">Entrar</Link>
