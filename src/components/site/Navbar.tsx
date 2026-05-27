@@ -114,13 +114,20 @@ export function Navbar() {
             <div className="my-2 h-px bg-border" />
             {user ? (
               <>
+                {isSuperAdmin && (
+                  <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium text-primary hover:bg-secondary">
+                    <ShieldCheck className="h-4 w-4" /> Admin
+                  </Link>
+                )}
                 <Link to="/perfil" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-3 text-sm hover:bg-secondary">
                   <UserCircle className="h-4 w-4" /> Meu perfil
+                  {isAdmin && <RoleBadge role={isSuperAdmin ? "super_admin" : "admin"} />}
                 </Link>
                 <button onClick={() => { setOpen(false); handleSignOut(); }} className="flex items-center gap-2 rounded-md px-3 py-3 text-left text-sm hover:bg-secondary">
                   <LogOut className="h-4 w-4" /> Sair
                 </button>
               </>
+
             ) : (
               <>
                 <Link to="/login" onClick={() => setOpen(false)} className="rounded-md px-3 py-3 text-sm font-medium hover:bg-secondary">Entrar</Link>
