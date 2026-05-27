@@ -1,15 +1,23 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
-import { posts, categories, formatDate, type Category } from "../lib/posts";
+import { useEffect, useMemo, useState } from "react";
+import { Plus, Search } from "lucide-react";
+import { listPosts, categories, formatDate, type Category, type Post } from "../lib/posts";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/blog/")({
   component: Blog,
 });
 
 function Blog() {
+  const { isAdmin } = useAuth();
   const [active, setActive] = useState<Category | "Todos">("Todos");
   const [q, setQ] = useState("");
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    listPosts().then(setPosts).finally(() => setLoading(false));
+  }, []);
 
   const filtered = useMemo(() => {
     return posts.filter((p) => {
@@ -20,19 +28,31 @@ function Blog() {
         p.excerpt.toLowerCase().includes(q.toLowerCase());
       return matchCat && matchQ;
     });
-  }, [active, q]);
+  }, [active, q, posts]);
 
   return (
     <>
       <section className="border-b border-border bg-secondary/40">
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-20">
-          <p className="text-sm font-semibold uppercase tracking-wider text-primary">Blog</p>
-          <h1 className="mt-3 text-4xl font-bold text-foreground md:text-5xl">
-            Publicações do projeto.
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            Artigos, tutoriais, notícias e relatos de eventos produzidos pela equipe do projeto.
-          </p>
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wider text-primary">Blog</p>
+              <h1 className="mt-3 text-4xl font-bold text-foreground md:text-5xl">
+                Publicações do projeto.
+              </h1>
+              <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+                Artigos, tutoriais, notícias e relatos de eventos produzidos pela equipe do projeto.
+              </p>
+            </div>
+            {isAdmin && (
+              <Link
+                to="/blog/novo"
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90"
+              >
+                <Plus className="h-4 w-4" /> Novo Post
+              </Link>
+            )}
+          </div>
 
           <div className="mt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-wrap gap-2">
@@ -64,7 +84,9 @@ function Blog() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
-        {filtered.length === 0 ? (
+        {loading ? (
+          <p className="py-20 text-center text-muted-foreground">Carregando...</p>
+        ) : filtered.length === 0 ? (
           <p className="py-20 text-center text-muted-foreground">Nenhuma publicação encontrada.</p>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -83,8 +105,8 @@ function Blog() {
                 </h2>
                 <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.excerpt}</p>
                 <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>{p.author}</span>
-                  <span>{formatDate(p.date)} · {p.readingTime}</span>
+                  <span>{p.author_name}</span>
+                  <span>{formatDate(p.created_at)} · {p.reading_time}</span>
                 </div>
               </Link>
             ))}

@@ -1,13 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ArrowRight, Database, Library, Network, Users } from "lucide-react";
-import { posts, formatDate } from "../lib/posts";
+import { listPosts, formatDate, type Post } from "../lib/posts";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 function Index() {
-  const recent = posts.slice(0, 3);
+  const [recent, setRecent] = useState<Post[]>([]);
+  useEffect(() => { listPosts().then((p) => setRecent(p.slice(0, 3))).catch(() => {}); }, []);
+
 
   return (
     <>
@@ -142,8 +145,9 @@ function Index() {
                 </h3>
                 <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.excerpt}</p>
                 <p className="mt-4 text-xs text-muted-foreground">
-                  {formatDate(p.date)} · {p.readingTime}
+                  {formatDate(p.created_at)} · {p.reading_time}
                 </p>
+
               </Link>
             ))}
           </div>
