@@ -19,6 +19,7 @@ function EditPost() {
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState<string>(categories[0]);
+  const [publishDate, setPublishDate] = useState<string>("");
   const [saving, setSaving] = useState(false);
   const [fetching, setFetching] = useState(true);
 
