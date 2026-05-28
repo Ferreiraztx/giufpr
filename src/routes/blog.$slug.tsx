@@ -66,7 +66,7 @@ function PostPage() {
       <div className="mt-5 flex flex-wrap gap-4 text-sm text-muted-foreground">
         <span className="inline-flex items-center gap-1.5"><User className="h-4 w-4" /> {post.author_name}</span>
         <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4" /> {formatDate(post.created_at)}</span>
-        <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" /> {post.reading_time}</span>
+        <span className="inline-flex items-center gap-1.5" title="Tempo estimado de leitura"><Clock className="h-4 w-4" /> {post.reading_time} de leitura</span>
       </div>
 
       <div className="my-8 h-px w-full bg-border" />

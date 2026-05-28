@@ -19,6 +19,7 @@ function EditPost() {
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState<string>(categories[0]);
+  const [publishDate, setPublishDate] = useState<string>("");
   const [saving, setSaving] = useState(false);
   const [fetching, setFetching] = useState(true);
 
@@ -30,6 +31,9 @@ function EditPost() {
         setExcerpt(p.excerpt);
         setContent(p.content);
         setCategory(p.category);
+        const d = new Date(p.created_at);
+        const tz = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+        setPublishDate(tz.toISOString().slice(0, 10));
       }
     }).finally(() => setFetching(false));
   }, [slug]);
@@ -50,12 +54,14 @@ function EditPost() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    const createdAt = new Date(`${publishDate}T12:00:00-03:00`).toISOString();
     const { error } = await supabase.from("posts").update({
       title: title.trim(),
       excerpt: excerpt.trim() || content.slice(0, 160),
       content: content.trim(),
       category,
       reading_time: estimateReadingTime(content),
+      created_at: createdAt,
     }).eq("id", post.id);
     setSaving(false);
     if (error) return toast.error(error.message);
@@ -78,6 +84,11 @@ function EditPost() {
             className="mt-1 h-11 w-full rounded-md border border-border bg-background px-3 text-sm">
             {categories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Data de publicação</label>
+          <input type="date" value={publishDate} onChange={(e) => setPublishDate(e.target.value)} required
+            className="mt-1 h-11 w-full rounded-md border border-border bg-background px-3 text-sm" />
         </div>
         <div>
           <label className="block text-sm font-medium">Resumo</label>

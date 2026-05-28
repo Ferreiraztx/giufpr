@@ -145,7 +145,7 @@ function Index() {
                 </h3>
                 <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.excerpt}</p>
                 <p className="mt-4 text-xs text-muted-foreground">
-                  {formatDate(p.created_at)} · {p.reading_time}
+                  {formatDate(p.created_at)} · {p.reading_time} de leitura
                 </p>
 
               </Link>

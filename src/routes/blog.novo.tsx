@@ -17,6 +17,11 @@ function NewPost() {
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState<string>(categories[0]);
+  const [publishDate, setPublishDate] = useState<string>(() => {
+    const d = new Date();
+    const tz = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+    return tz.toISOString().slice(0, 10);
+  });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -30,6 +35,7 @@ function NewPost() {
     setSaving(true);
     const baseSlug = slugify(title);
     const slug = `${baseSlug}-${Date.now().toString(36)}`;
+    const createdAt = new Date(`${publishDate}T12:00:00-03:00`).toISOString();
     const { error } = await supabase.from("posts").insert({
       slug,
       title: title.trim(),
@@ -39,6 +45,7 @@ function NewPost() {
       author_id: user.id,
       author_name: profile?.display_name || user.email?.split("@")[0] || "Autor",
       reading_time: estimateReadingTime(content),
+      created_at: createdAt,
     });
     setSaving(false);
     if (error) return toast.error(error.message);
@@ -67,6 +74,11 @@ function NewPost() {
             className="mt-1 h-11 w-full rounded-md border border-border bg-background px-3 text-sm">
             {categories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Data de publicação</label>
+          <input type="date" value={publishDate} onChange={(e) => setPublishDate(e.target.value)} required
+            className="mt-1 h-11 w-full rounded-md border border-border bg-background px-3 text-sm" />
         </div>
         <div>
           <label className="block text-sm font-medium">Resumo (opcional)</label>
