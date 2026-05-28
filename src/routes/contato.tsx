@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Mail, MapPin, Send, CheckCircle2 } from "lucide-react";
+import { Mail, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/contato")({
   component: Contato,
@@ -8,14 +8,38 @@ export const Route = createFileRoute("/contato")({
 
 function Contato() {
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ nome: "", email: "", assunto: "", mensagem: "" });
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder: integrar com backend / serviço de e-mail futuramente.
-    console.log("Mensagem de contato:", form);
-    setSent(true);
-    setForm({ nome: "", email: "", assunto: "", mensagem: "" });
+    setLoading(true);
+    setError(false);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xdajyyol", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: form.nome,
+          email: form.email,
+          assunto: form.assunto,
+          mensagem: form.mensagem,
+        }),
+      });
+
+      if (response.ok) {
+        setSent(true);
+        setForm({ nome: "", email: "", assunto: "", mensagem: "" });
+      } else {
+        setError(true);
+      }
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -61,6 +85,13 @@ function Contato() {
             <div className="mb-6 flex items-start gap-3 rounded-md border border-accent/40 bg-accent/10 p-4 text-sm text-accent-foreground">
               <CheckCircle2 className="mt-0.5 h-5 w-5" />
               <span>Mensagem enviada! Em breve retornaremos o seu contato.</span>
+            </div>
+          )}
+
+          {error && (
+            <div className="mb-6 flex items-start gap-3 rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
+              <AlertCircle className="mt-0.5 h-5 w-5" />
+              <span>Erro ao enviar a mensagem. Tente novamente ou entre em contato pelo e-mail diretamente.</span>
             </div>
           )}
 
@@ -111,9 +142,10 @@ function Contato() {
 
           <button
             type="submit"
-            className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+            disabled={loading}
+            className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Enviar mensagem <Send className="h-4 w-4" />
+            {loading ? "Enviando..." : <><Send className="h-4 w-4" /> Enviar mensagem</>}
           </button>
         </form>
       </section>
