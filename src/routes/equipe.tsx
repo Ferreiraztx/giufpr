@@ -46,10 +46,10 @@ function Equipe() {
               </p>
               <p className="mt-4 text-sm text-muted-foreground">{m.bio}</p>
               <div className="mt-5 flex justify-center gap-2 text-muted-foreground">
-                <a href={`mailto:${m.name.toLowerCase()}@ufpr.br`} className="rounded-md border border-border p-2 hover:text-primary" aria-label={`E-mail de ${m.name}`}>
+                <a href={`mailto:clwra.gura@gmail.com`} className="rounded-md border border-border p-2 hover:text-primary" aria-label={`E-mail de ${m.name}`}>
                   <Mail className="h-4 w-4" />
                 </a>
-                <a href="#" className="rounded-md border border-border p-2 hover:text-primary" aria-label={`LinkedIn de ${m.name}`}>
+                <a href="https://www.linkedin.com/in/clara-rodrigues-gura-394163370/" className="rounded-md border border-border p-2 hover:text-primary" aria-label={`LinkedIn de ${m.name}`}>
                   <Linkedin className="h-4 w-4" />
                 </a>
               </div>
