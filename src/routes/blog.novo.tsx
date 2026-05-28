@@ -35,6 +35,7 @@ function NewPost() {
     setSaving(true);
     const baseSlug = slugify(title);
     const slug = `${baseSlug}-${Date.now().toString(36)}`;
+    const createdAt = new Date(`${publishDate}T12:00:00-03:00`).toISOString();
     const { error } = await supabase.from("posts").insert({
       slug,
       title: title.trim(),
@@ -44,6 +45,7 @@ function NewPost() {
       author_id: user.id,
       author_name: profile?.display_name || user.email?.split("@")[0] || "Autor",
       reading_time: estimateReadingTime(content),
+      created_at: createdAt,
     });
     setSaving(false);
     if (error) return toast.error(error.message);
