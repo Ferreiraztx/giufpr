@@ -31,6 +31,9 @@ function EditPost() {
         setExcerpt(p.excerpt);
         setContent(p.content);
         setCategory(p.category);
+        const d = new Date(p.created_at);
+        const tz = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+        setPublishDate(tz.toISOString().slice(0, 10));
       }
     }).finally(() => setFetching(false));
   }, [slug]);
