@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { categories, estimateReadingTime, getPostBySlug, type Post } from "@/lib/posts";
 
-export const Route = createFileRoute("/blog/$slug/editar")({
+export const Route = createFileRoute("/blog/$slug_/editar")({
   component: EditPost,
   head: () => ({ meta: [{ title: "Editar post · GI UFPR" }] }),
 });
