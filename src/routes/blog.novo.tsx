@@ -17,6 +17,11 @@ function NewPost() {
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState<string>(categories[0]);
+  const [publishDate, setPublishDate] = useState<string>(() => {
+    const d = new Date();
+    const tz = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+    return tz.toISOString().slice(0, 10);
+  });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
