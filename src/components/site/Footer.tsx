@@ -33,7 +33,7 @@ export function Footer() {
             </li>
             <li className="flex items-center gap-2">
               <Mail className="h-4 w-4 text-accent" />
-              <a href="mailto:contato@gi.ufpr.br" className="hover:text-accent">contato@gi.ufpr.br</a>
+              <a href="mailto:clwra.gura@gmail.com" className="hover:text-accent">clwra.gura@gmail.com</a>
             </li>
             <li>
               <a

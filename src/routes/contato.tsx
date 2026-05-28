@@ -40,8 +40,8 @@ function Contato() {
               <Mail className="h-5 w-5" />
             </span>
             <h3 className="mt-4 font-semibold text-foreground">E-mail</h3>
-            <a href="mailto:contato@gi.ufpr.br" className="mt-1 block text-sm text-muted-foreground hover:text-primary">
-              mathxtzferreira@gmail.com
+            <a href="mailto:clwra.gura@gmail.com" className="mt-1 block text-sm text-muted-foreground hover:text-primary">
+              clwra.gura@gmail.com
             </a>
           </div>
           <div className="rounded-xl border border-border bg-card p-6">
