@@ -54,12 +54,14 @@ function EditPost() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    const createdAt = new Date(`${publishDate}T12:00:00-03:00`).toISOString();
     const { error } = await supabase.from("posts").update({
       title: title.trim(),
       excerpt: excerpt.trim() || content.slice(0, 160),
       content: content.trim(),
       category,
       reading_time: estimateReadingTime(content),
+      created_at: createdAt,
     }).eq("id", post.id);
     setSaving(false);
     if (error) return toast.error(error.message);
