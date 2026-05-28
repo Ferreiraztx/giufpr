@@ -97,7 +97,7 @@ function Index() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             {[
-              { n: "03", t: "Integrantes" },
+              { n: "01", t: "Integrante" },
               { n: "12+", t: "Publicações previstas" },
               { n: "04", t: "Eixos temáticos" },
               { n: "UFPR", t: "Setor de Ciências Sociais Aplicadas" },
