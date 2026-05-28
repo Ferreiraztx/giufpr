@@ -31,11 +31,11 @@ function Equipe() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className={team.length === 1 ? "flex justify-center" : "grid gap-6 md:grid-cols-3"}>
           {team.map((m) => (
             <article
               key={m.name}
-              className="flex flex-col rounded-xl border border-border bg-card p-6 text-center"
+              className="flex w-full max-w-sm flex-col rounded-xl border border-border bg-card p-6 text-center"
             >
               <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-primary text-2xl font-semibold text-primary-foreground">
                 {m.initials}
