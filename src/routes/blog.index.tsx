@@ -106,7 +106,7 @@ function Blog() {
                 <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.excerpt}</p>
                 <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
                   <span>{p.author_name}</span>
-                  <span>{formatDate(p.created_at)} · {p.reading_time}</span>
+                  <span>{formatDate(p.created_at)} · {p.reading_time} de leitura</span>
                 </div>
               </Link>
             ))}
