@@ -86,6 +86,11 @@ function EditPost() {
           </select>
         </div>
         <div>
+          <label className="block text-sm font-medium">Data de publicação</label>
+          <input type="date" value={publishDate} onChange={(e) => setPublishDate(e.target.value)} required
+            className="mt-1 h-11 w-full rounded-md border border-border bg-background px-3 text-sm" />
+        </div>
+        <div>
           <label className="block text-sm font-medium">Resumo</label>
           <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} maxLength={280}
             className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
