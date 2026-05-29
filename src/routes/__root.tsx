@@ -89,6 +89,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       {
+        rel: "icon",
+        type: "image/png", // mude para image/x-icon se o seu arquivo for .ico
+        href: "/logo.png", // coloque aqui o nome exato da sua imagem na pasta public
+      },
+      {
         rel: "stylesheet",
         href: appCss,
       },
