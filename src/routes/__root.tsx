@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Projeto de Extensão · Gestão da Informação UFPR" },
       { name: "description", content: "Blog do projeto de extensão do curso de Gestão da Informação da Universidade Federal do Paraná." },
-      { name: "author", content: "Clara, Julia e Eduardo — UFPR" },
+      { name: "author", content: "Clara — UFPR" },
       { property: "og:title", content: "Projeto de Extensão · Gestão da Informação UFPR" },
       { property: "og:description", content: "Blog do projeto de extensão do curso de Gestão da Informação da Universidade Federal do Paraná." },
       { property: "og:type", content: "website" },

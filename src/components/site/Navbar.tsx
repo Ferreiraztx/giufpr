@@ -7,9 +7,8 @@ import { UserAvatar } from "./UserAvatar";
 function RoleBadge({ role }: { role: "admin" | "super_admin" }) {
   const isSuper = role === "super_admin";
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
-      isSuper ? "bg-primary text-primary-foreground" : "bg-accent/30 text-accent-foreground"
-    }`}>
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${isSuper ? "bg-primary text-primary-foreground" : "bg-accent/30 text-accent-foreground"
+      }`}>
       {isSuper ? <ShieldCheck className="h-3 w-3" /> : <Shield className="h-3 w-3" />}
       {isSuper ? "Super Admin" : "Admin"}
     </span>
@@ -40,9 +39,11 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <BookOpen className="h-5 w-5" />
-          </span>
+          <img
+            src="/logo.png"
+            alt="Logo Gestão da Informação"
+            className="h-9 w-9 object-contain"
+          />
           <div className="leading-tight">
             <p className="text-sm font-semibold text-foreground">GI Extensão</p>
             <p className="text-[11px] text-muted-foreground">UFPR · Gestão da Informação</p>
