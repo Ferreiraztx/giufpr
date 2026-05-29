@@ -15,7 +15,7 @@ export type Post = {
   reading_time: string;
 };
 
-export const categories: Category[] = ["Pesquisa", "Eventos", "Tutoriais", "Notícias"];
+export const categories: Category[] = ["Notícias"];
 
 export async function listPosts(): Promise<Post[]> {
   const { data, error } = await supabase
