@@ -31,7 +31,7 @@ function Index() {
             </h1>
             <p className="mt-5 max-w-xl text-base text-primary-foreground/80 md:text-lg">
               Iniciativa do curso de Gestão da Informação da Universidade Federal do Paraná
-              dedicada a compartilhar pesquisas, tutoriais e eventos com a comunidade acadêmica
+              dedicada a compartilhar notícias com a comunidade acadêmica
               e profissional.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
